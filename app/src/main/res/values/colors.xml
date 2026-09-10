@@ -1,1 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 
+<resources>
+
+    <color name="black">#000000</color>
+
+    <color name="dark_bg">#0B0B0F</color>
+
+    <color name="card_bg">#17171D</color>
+
+    <color name="text_primary">#FFFFFF</color>
+
+    <color name="text_secondary">#A9A9B2</color>
+
+    <color name="accent">#E50914</color>
+
+</resources>
