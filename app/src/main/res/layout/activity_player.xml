@@ -22,4 +22,19 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
+    <!-- Full Screen Button -->
+    <TextView
+        android:id="@+id/fullscreenButton"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:background="#99000000"
+        android:text="⛶"
+        android:textColor="@color/text_primary"
+        android:textSize="30sp"
+        android:focusable="true"
+        android:clickable="true" />
+
 </FrameLayout>
