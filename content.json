@@ -1,9 +1,9 @@
 [
   {
-    "title": "Sample Live TV",
+    "title": "Bijoy TV",
     "category": "Live TV",
-    "poster": "https://dummyimage.com/600x900/222/fff&text=LIVE+TV",
-    "videoUrl": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+    "poster": "https://raw.githubusercontent.com/royalcyber7r/RoyalCyberTV/main/app/src/main/logos/187x0-icon.png",
+    "videoUrl": "https://stream.ottplus.live/live/bijoy_tv_abr/live/bijoy_tv_720/chunks.m3u8"
   },
   {
     "title": "Sample Movie",
