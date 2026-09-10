@@ -5,6 +5,13 @@
     "poster": "https://raw.githubusercontent.com/royalcyber7r/RoyalCyberTV/main/app/src/main/logos/187x0-icon.png",
     "videoUrl": "https://stream.ottplus.live/live/bijoy_tv_abr/live/bijoy_tv_720/chunks.m3u8"
   },
+
+  {
+    "title": "Colours",
+    "category": "Live TV",
+    "poster": "https://raw.githubusercontent.com/royalcyber7r/RoyalCyberTV/main/app/src/main/logos/COLORS.png",
+    "videoUrl": "https://da86m1sqpm3o0.cloudfront.net/28072023/smil:colorsme.smil/playlist.m3u8"
+  },
   {
     "title": "Sample Movie",
     "category": "Movies",
