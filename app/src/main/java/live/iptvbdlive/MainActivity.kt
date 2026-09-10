@@ -4,55 +4,60 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.json.JSONArray
+import java.net.HttpURLConnection
+import java.net.URL
+import kotlin.concurrent.thread
 
 class MainActivity : Activity() {
 
     private lateinit var adapter: ContentAdapter
-    private lateinit var allItems: List<ContentItem>
+    private var allItems: List<ContentItem> = emptyList()
 
     private var selectedCategory = "All"
+
+    /*
+     * এখানে YOUR_GITHUB_USERNAME-এর জায়গায়
+     * আপনার GitHub username লিখবেন।
+     *
+     * উদাহরণ:
+     * https://raw.githubusercontent.com/royalcyber7r/iptvbdlive/main/content.json
+     */
+    private val contentUrl =
+        "https://raw.githubusercontent.com/royalcyber7r/iptvbdlive/main/content.json"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
 
-        // Sample content
-        allItems = demoContent()
-
         setupGrid()
         setupCategories()
         setupSearch()
         setupBottomNavigation()
-    }
 
-    // --------------------------------------------------
-    // Content Grid
-    // --------------------------------------------------
+        loadContent()
+    }
 
     private fun setupGrid() {
 
         val grid = findViewById<RecyclerView>(R.id.contentGrid)
 
-        val columns = if (isAndroidTV()) {
-            5
-        } else {
-            3
-        }
+        val columns = if (isAndroidTV()) 5 else 3
 
-        grid.layoutManager = GridLayoutManager(this, columns)
+        grid.layoutManager =
+            GridLayoutManager(this, columns)
 
-        adapter = ContentAdapter(allItems) { item ->
+        adapter = ContentAdapter(emptyList()) { item ->
 
-            val intent = Intent(this, PlayerActivity::class.java)
+            val intent =
+                Intent(this, PlayerActivity::class.java)
 
             intent.putExtra("title", item.title)
             intent.putExtra("url", item.videoUrl)
@@ -62,10 +67,6 @@ class MainActivity : Activity() {
 
         grid.adapter = adapter
     }
-
-    // --------------------------------------------------
-    // Categories
-    // --------------------------------------------------
 
     private fun setupCategories() {
 
@@ -86,11 +87,13 @@ class MainActivity : Activity() {
 
             button.text = category
             button.textSize = 14f
+
             button.setTextColor(
                 getColor(R.color.text_primary)
             )
 
-            button.gravity = android.view.Gravity.CENTER
+            button.gravity =
+                android.view.Gravity.CENTER
 
             button.setPadding(
                 28,
@@ -103,7 +106,6 @@ class MainActivity : Activity() {
             button.isClickable = true
 
             button.setOnClickListener {
-
                 selectCategory(category)
             }
 
@@ -117,25 +119,18 @@ class MainActivity : Activity() {
         }
     }
 
-    // --------------------------------------------------
-    // Search
-    // --------------------------------------------------
-
     private fun setupSearch() {
 
         val searchBox =
             findViewById<EditText>(R.id.searchBox)
 
         searchBox.addTextChangedListener(
-            object : TextWatcher {
+            object : android.text.TextWatcher {
 
                 override fun afterTextChanged(
-                    text: Editable?
+                    text: android.text.Editable?
                 ) {
-
-                    filter(
-                        text?.toString().orEmpty()
-                    )
+                    filter(text?.toString().orEmpty())
                 }
 
                 override fun beforeTextChanged(
@@ -156,10 +151,6 @@ class MainActivity : Activity() {
             }
         )
     }
-
-    // --------------------------------------------------
-    // Bottom Navigation
-    // --------------------------------------------------
 
     private fun setupBottomNavigation() {
 
@@ -192,93 +183,138 @@ class MainActivity : Activity() {
         }
     }
 
-    // --------------------------------------------------
-    // Category Filter
-    // --------------------------------------------------
-
-    private fun selectCategory(category: String) {
+    private fun selectCategory(
+        category: String
+    ) {
 
         selectedCategory = category
 
         val searchBox =
             findViewById<EditText>(R.id.searchBox)
 
-        filter(
-            searchBox.text.toString()
-        )
+        filter(searchBox.text.toString())
     }
-
-    // --------------------------------------------------
-    // Search + Category Filter
-    // --------------------------------------------------
 
     private fun filter(query: String) {
 
-        val result = allItems.filter { item ->
+        val result =
+            allItems.filter { item ->
 
-            val categoryMatch =
-                selectedCategory == "All" ||
-                        item.category == selectedCategory
+                val categoryMatch =
+                    selectedCategory == "All" ||
+                            item.category == selectedCategory
 
-            val searchMatch =
-                query.isBlank() ||
-                        item.title.contains(
-                            query,
-                            ignoreCase = true
-                        )
+                val searchMatch =
+                    query.isBlank() ||
+                            item.title.contains(
+                                query,
+                                ignoreCase = true
+                            )
 
-            categoryMatch && searchMatch
-        }
+                categoryMatch && searchMatch
+            }
 
         adapter.submitList(result)
     }
 
-    // --------------------------------------------------
-    // Android TV Detection
-    // --------------------------------------------------
+    private fun loadContent() {
+
+        thread {
+
+            try {
+
+                val connection =
+                    URL(contentUrl)
+                        .openConnection() as HttpURLConnection
+
+                connection.requestMethod = "GET"
+
+                connection.connectTimeout = 10000
+                connection.readTimeout = 10000
+
+                connection.connect()
+
+                if (connection.responseCode != 200) {
+                    throw Exception(
+                        "HTTP ${connection.responseCode}"
+                    )
+                }
+
+                val json =
+                    connection.inputStream
+                        .bufferedReader()
+                        .use { it.readText() }
+
+                connection.disconnect()
+
+                val jsonArray =
+                    JSONArray(json)
+
+                val items =
+                    mutableListOf<ContentItem>()
+
+                for (i in 0 until jsonArray.length()) {
+
+                    val obj =
+                        jsonArray.getJSONObject(i)
+
+                    val title =
+                        obj.optString("title")
+
+                    val category =
+                        obj.optString("category")
+
+                    val poster =
+                        obj.optString("poster")
+
+                    val videoUrl =
+                        obj.optString("videoUrl")
+
+                    if (
+                        title.isNotBlank() &&
+                        videoUrl.isNotBlank()
+                    ) {
+
+                        items.add(
+                            ContentItem(
+                                title = title,
+                                category = category,
+                                poster = poster,
+                                videoUrl = videoUrl
+                            )
+                        )
+                    }
+                }
+
+                runOnUiThread {
+
+                    allItems = items
+
+                    filter(
+                        findViewById<EditText>(
+                            R.id.searchBox
+                        ).text.toString()
+                    )
+                }
+
+            } catch (e: Exception) {
+
+                runOnUiThread {
+
+                    Toast.makeText(
+                        this,
+                        "Content load failed",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
 
     private fun isAndroidTV(): Boolean {
 
         return packageManager.hasSystemFeature(
             PackageManager.FEATURE_LEANBACK
-        )
-    }
-
-    // --------------------------------------------------
-    // Sample Content
-    // --------------------------------------------------
-
-    private fun demoContent(): List<ContentItem> {
-
-        return listOf(
-
-            ContentItem(
-                title = "Sample Live TV",
-                category = "Live TV",
-                poster = "https://dummyimage.com/600x900/222/fff&text=LIVE+TV",
-                videoUrl = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
-            ),
-
-            ContentItem(
-                title = "Sample Movie",
-                category = "Movies",
-                poster = "https://dummyimage.com/600x900/222/fff&text=MOVIE",
-                videoUrl = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
-            ),
-
-            ContentItem(
-                title = "Sample Drama",
-                category = "Drama",
-                poster = "https://dummyimage.com/600x900/222/fff&text=DRAMA",
-                videoUrl = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
-            ),
-
-            ContentItem(
-                title = "Sample Web Series",
-                category = "Web Series",
-                poster = "https://dummyimage.com/600x900/222/fff&text=WEB+SERIES",
-                videoUrl = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
-            )
         )
     }
 }
