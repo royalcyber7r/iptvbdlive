@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Sample Live TV",
+    "category": "Live TV",
+    "poster": "https://dummyimage.com/600x900/222/fff&text=LIVE+TV",
+    "videoUrl": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+  },
+  {
+    "title": "Sample Movie",
+    "category": "Movies",
+    "poster": "https://dummyimage.com/600x900/222/fff&text=MOVIE",
+    "videoUrl": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+  },
+  {
+    "title": "Sample Drama",
+    "category": "Drama",
+    "poster": "https://dummyimage.com/600x900/222/fff&text=DRAMA",
+    "videoUrl": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+  },
+  {
+    "title": "Sample Web Series",
+    "category": "Web Series",
+    "poster": "https://dummyimage.com/600x900/222/fff&text=WEB+SERIES",
+    "videoUrl": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+  }
+]
