@@ -13,10 +13,10 @@
     "videoUrl": "https://da86m1sqpm3o0.cloudfront.net/28072023/smil:colorsme.smil/playlist.m3u8"
   },
   {
-    "title": "Sample Movie",
+    "title": "Toxic Movie",
     "category": "Movies",
-    "poster": "https://dummyimage.com/600x900/222/fff&text=MOVIE",
-    "videoUrl": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+    "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFpX74JGl583N3Jenp2MTbOaEV1cUb7r2zdn7opNmtLcjb6HaD-fD9BUc&s=10",
+    "videoUrl": "https://cc-jytb1qhmgqh5a.akamaized.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-jytb1qhmgqh5a/playlist.m3u8"
   },
   {
     "title": "Sample Drama",
