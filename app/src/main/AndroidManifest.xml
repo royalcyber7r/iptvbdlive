@@ -16,7 +16,7 @@
 
     <application
         android:allowBackup="true"
-        android:label="IPTV BD Live"
+        android:label="IPTV Faridganj"
         android:supportsRtl="true"
         android:theme="@style/Theme.IPTVBDLive"
         android:usesCleartextTraffic="true">
