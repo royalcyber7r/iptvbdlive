@@ -39,19 +39,38 @@ class PlayerActivity : Activity() {
         val url =
             intent.getStringExtra("url").orEmpty()
 
-        player =
-            ExoPlayer.Builder(this).build().also {
+        // Content type
+        // বর্তমানে m3u8 / mp4 দুটোই ExoPlayer দিয়ে চলবে।
+        val type =
+            intent.getStringExtra("type")
+                .orEmpty()
+                .lowercase()
 
-                playerView.player = it
+        // Premium status ভবিষ্যতে ব্যবহার করার জন্য রাখা হলো।
+        // এখন premium content block করা হচ্ছে না।
+        val premium =
+            intent.getBooleanExtra(
+                "premium",
+                false
+            )
 
-                it.setMediaItem(
-                    MediaItem.fromUri(url)
-                )
+        // URL না থাকলে player চালানোর চেষ্টা করবে না
+        if (url.isNotBlank()) {
 
-                it.prepare()
+            player =
+                ExoPlayer.Builder(this).build().also {
 
-                it.playWhenReady = true
-            }
+                    playerView.player = it
+
+                    it.setMediaItem(
+                        MediaItem.fromUri(url)
+                    )
+
+                    it.prepare()
+
+                    it.playWhenReady = true
+                }
+        }
 
         fullscreenButton.setOnClickListener {
 
@@ -152,7 +171,7 @@ class PlayerActivity : Activity() {
         super.onStop()
 
         // Fullscreen orientation change-এর সময়
-        // Activity recreate না হওয়ায় player এখানে
+        // Activity recreate না হওয়ায় player
         // অকারণে release হবে না।
         if (isChangingConfigurations) {
             return
