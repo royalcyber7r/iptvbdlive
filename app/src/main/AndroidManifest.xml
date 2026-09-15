@@ -23,9 +23,10 @@
 
         <!-- Video Player -->
         <activity
-            android:name=".PlayerActivity"
-            android:screenOrientation="unspecified" />
-
+           android:name=".PlayerActivity"
+           android:screenOrientation="unspecified"
+           android:configChanges="orientation|screenSize|keyboardHidden" />
+        
         <!-- Main Screen -->
         <activity
             android:name=".MainActivity"
