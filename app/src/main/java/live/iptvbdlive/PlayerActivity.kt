@@ -29,7 +29,7 @@ class PlayerActivity : Activity() {
         val fullscreenButton =
             findViewById<TextView>(R.id.fullscreenButton)
 
-        // ভিডিও কখনো অযথা crop/zoom করবে না
+        // Video aspect ratio ঠিক রাখবে
         playerView.resizeMode =
             AspectRatioFrameLayout.RESIZE_MODE_FIT
 
@@ -54,6 +54,7 @@ class PlayerActivity : Activity() {
             }
 
         fullscreenButton.setOnClickListener {
+
             toggleFullscreen(
                 playerView,
                 title,
@@ -72,11 +73,11 @@ class PlayerActivity : Activity() {
 
         if (isFullscreen) {
 
-            // Landscape
+            // Landscape fullscreen
             requestedOrientation =
                 ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
-            // পুরো screen থেকে system bar সরানো
+            // System navigation/status bar hide
             window.decorView.systemUiVisibility =
                 View.SYSTEM_UI_FLAG_FULLSCREEN or
                         View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
@@ -85,22 +86,22 @@ class PlayerActivity : Activity() {
                         View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
                         View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 
-            // Fullscreen-এ video fit থাকবে
+            // Crop/zoom নয়, পুরো video fit থাকবে
             playerView.resizeMode =
                 AspectRatioFrameLayout.RESIZE_MODE_FIT
 
-            // Fullscreen-এ title লুকানো
-            title.visibility = View.GONE
+            title.visibility =
+                View.GONE
 
             button.text = "⛶"
 
         } else {
 
-            // আগের orientation
+            // Normal orientation
             requestedOrientation =
                 ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
 
-            // System bar আবার দেখানো
+            // System bars দেখাবে
             window.decorView.systemUiVisibility =
                 View.SYSTEM_UI_FLAG_VISIBLE
 
@@ -108,8 +109,8 @@ class PlayerActivity : Activity() {
             playerView.resizeMode =
                 AspectRatioFrameLayout.RESIZE_MODE_FIT
 
-            // Title আবার দেখানো
-            title.visibility = View.VISIBLE
+            title.visibility =
+                View.VISIBLE
 
             button.text = "⛶"
         }
@@ -149,6 +150,13 @@ class PlayerActivity : Activity() {
     override fun onStop() {
 
         super.onStop()
+
+        // Fullscreen orientation change-এর সময়
+        // Activity recreate না হওয়ায় player এখানে
+        // অকারণে release হবে না।
+        if (isChangingConfigurations) {
+            return
+        }
 
         player?.release()
 
