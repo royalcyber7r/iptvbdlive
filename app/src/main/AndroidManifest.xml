@@ -15,12 +15,13 @@
         android:required="false" />
 
     <application
-        android:allowBackup="true"
-        android:label="IPTV Faridganj"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.IPTVBDLive"
-        android:usesCleartextTraffic="true">
-
+       android:allowBackup="true"
+       android:label="IPTV Faridganj"
+       android:icon="@drawable/royalcyber_logo"
+       android:supportsRtl="true"
+       android:theme="@style/Theme.IPTVBDLive"
+       android:usesCleartextTraffic="true">
+        
         <!-- Video Player -->
         <activity
            android:name=".PlayerActivity"
