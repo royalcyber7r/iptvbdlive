@@ -1,4 +1,14 @@
-[
+ [
+
+   {
+    "title": "Channel 24",
+    "category": "Live TV",
+    "poster": "https://raw.githubusercontent.com/royalcyber7r/RoyalCyberTV/main/app/src/main/logos/187x0-icon.png",
+    "videoUrl": "https://www.youtube.com/live/LVPgC7LQOw0?si=jj8ypKXWLHhrWiqx",
+    "type": "youtube",
+    "premium": false
+  },
+
   {
     "title": "Bijoy TV",
     "category": "Live TV",
