@@ -62,6 +62,12 @@ class MainActivity : Activity() {
             intent.putExtra("title", item.title)
             intent.putExtra("url", item.videoUrl)
 
+            // Source type
+            intent.putExtra("type", item.type)
+
+            // Premium status
+            intent.putExtra("premium", item.premium)
+
             startActivity(intent)
         }
 
@@ -270,6 +276,22 @@ class MainActivity : Activity() {
                     val videoUrl =
                         obj.optString("videoUrl")
 
+                    // Source type
+                    // type না থাকলে পুরোনো content-এর জন্য m3u8 ধরা হবে
+                    val type =
+                        obj.optString(
+                            "type",
+                            "m3u8"
+                        ).lowercase()
+
+                    // Premium status
+                    // premium না থাকলে false ধরা হবে
+                    val premium =
+                        obj.optBoolean(
+                            "premium",
+                            false
+                        )
+
                     if (
                         title.isNotBlank() &&
                         videoUrl.isNotBlank()
@@ -280,7 +302,9 @@ class MainActivity : Activity() {
                                 title = title,
                                 category = category,
                                 poster = poster,
-                                videoUrl = videoUrl
+                                videoUrl = videoUrl,
+                                type = type,
+                                premium = premium
                             )
                         )
                     }
